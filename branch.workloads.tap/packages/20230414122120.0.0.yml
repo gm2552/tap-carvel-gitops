@@ -1,0 +1,25 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: branch.workloads.tap.20230414122120.0.0
+spec:
+  refName: branch.workloads.tap
+  version: 20230414122120.0.0
+  releaseNotes: |
+    Release v20230414122120.0.0 of package branch.workloads.tap
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: reg.perfect300rock.com/tapdev/supply-chain/branch-workloads-bundle@sha256:0d58ce56f564921be8c0548c0dc8ee32452ec2e6effd9c4d546c4244b514f390
+      template:
+      - ytt:
+          paths:
+          - .
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+      deploy:
+      - kapp: {}
+
