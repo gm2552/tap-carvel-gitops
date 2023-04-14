@@ -4,7 +4,7 @@ kind: PackageInstall
 metadata:
  name: app
 spec:
- serviceAccountName: <run-cluster-ns-sa> # ServiceAccount on Run cluster with permissions to deploy Package, see "Set up Run Cluster Namespaces"
+ serviceAccountName: default
  packageRef:
    refName: branch.workloads.tap # name of the Package
    versionSelection:
