@@ -1,0 +1,36 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: spring-streaming-sink.workloads.tap.20240401233258.0.0
+spec:
+  refName: spring-streaming-sink.workloads.tap
+  version: 20240401233258.0.0
+  releaseNotes: |
+    Release v20240401233258.0.0 of package spring-streaming-sink.workloads.tap
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: reg.perfect300rock.com/tapdev/supply-chain/spring-streaming-sink-workloads-bundle@sha256:8359dab658c26883e502a20a289b2a2063231b8abecec3f1e45491784ed1a4b8
+      template:
+      - ytt:
+          paths:
+          - .
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+      deploy:
+      - kapp: {}
+  valuesSchema:
+    openAPIv3:
+      type: object
+      additionalProperties: false
+      properties:
+        workload_name:
+          type: string
+          default: ""
+        replicas:
+          type: integer
+          default: 1
+
