@@ -1,0 +1,93 @@
+apiVersion: kapp.k14s.io/v1alpha1
+kind: Config
+waitRules:
+- conditionMatchers:
+  - type: ServiceAvailable
+    status: "False"
+    failure: true
+  - type: ServiceAvailable
+    status: "True"
+    success: true
+  resourceMatchers:
+  - apiVersionKindMatcher:
+      apiVersion: servicebinding.io/v1alpha3
+      kind: ServiceBinding
+---
+apiVersion: servicebinding.io/v1alpha3
+kind: ServiceBinding
+metadata:
+  name: postal-code-search-sso
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"carto.run/v1alpha1","kind":"Workload","metadata":{"annotations":{},"labels":{"app.kubernetes.io/part-of":"postal-code-search","apps.tanzu.vmware.com/auto-configure-actuators":"true","apps.tanzu.vmware.com/has-tests":"true","apps.tanzu.vmware.com/workload-type":"server"},"name":"postal-code-search","namespace":"workloads"},"spec":{"build":{"env":[{"name":"BP_JVM_VERSION","value":"21"}]},"env":[{"name":"spring_profiles_active","value":"oauth2"}],"resources":{"limits":{"cpu":"1500m","memory":"750M"},"requests":{"cpu":"100m","memory":"500M"}},"serviceClaims":[{"name":"sso","ref":{"apiVersion":"sso.apps.tanzu.vmware.com/v1alpha1","kind":"ClientRegistration","name":"appsso-postal-codes"}},{"name":"rmq","ref":{"apiVersion":"services.apps.tanzu.vmware.com/v1alpha1","kind":"ClassClaim","name":"msgbroker-postal-codes"}},{"name":"cacert","ref":{"apiVersion":"v1","kind":"Secret","name":"appsso-postal-codes-ca-cert"}}],"source":{"git":{"ref":{"branch":"secure-resource-server"},"url":"https://github.com/vmware-tanzu/application-accelerator-samples"},"subPath":"spring-secure-resource-server/postal-code-search"}}}
+    kapp.k14s.io/change-group: servicebinding.io/ServiceBindings
+  labels:
+    app.kubernetes.io/part-of: postal-code-search
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/component: run
+    carto.run/workload-name: postal-code-search
+spec:
+  name: sso
+  service:
+    apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+    kind: ClientRegistration
+    name: appsso-postal-codes
+  workload:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: postal-code-search
+---
+apiVersion: servicebinding.io/v1alpha3
+kind: ServiceBinding
+metadata:
+  name: postal-code-search-rmq
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"carto.run/v1alpha1","kind":"Workload","metadata":{"annotations":{},"labels":{"app.kubernetes.io/part-of":"postal-code-search","apps.tanzu.vmware.com/auto-configure-actuators":"true","apps.tanzu.vmware.com/has-tests":"true","apps.tanzu.vmware.com/workload-type":"server"},"name":"postal-code-search","namespace":"workloads"},"spec":{"build":{"env":[{"name":"BP_JVM_VERSION","value":"21"}]},"env":[{"name":"spring_profiles_active","value":"oauth2"}],"resources":{"limits":{"cpu":"1500m","memory":"750M"},"requests":{"cpu":"100m","memory":"500M"}},"serviceClaims":[{"name":"sso","ref":{"apiVersion":"sso.apps.tanzu.vmware.com/v1alpha1","kind":"ClientRegistration","name":"appsso-postal-codes"}},{"name":"rmq","ref":{"apiVersion":"services.apps.tanzu.vmware.com/v1alpha1","kind":"ClassClaim","name":"msgbroker-postal-codes"}},{"name":"cacert","ref":{"apiVersion":"v1","kind":"Secret","name":"appsso-postal-codes-ca-cert"}}],"source":{"git":{"ref":{"branch":"secure-resource-server"},"url":"https://github.com/vmware-tanzu/application-accelerator-samples"},"subPath":"spring-secure-resource-server/postal-code-search"}}}
+    kapp.k14s.io/change-group: servicebinding.io/ServiceBindings
+  labels:
+    app.kubernetes.io/part-of: postal-code-search
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/component: run
+    carto.run/workload-name: postal-code-search
+spec:
+  name: rmq
+  service:
+    apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+    kind: ClassClaim
+    name: msgbroker-postal-codes
+  workload:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: postal-code-search
+---
+apiVersion: servicebinding.io/v1alpha3
+kind: ServiceBinding
+metadata:
+  name: postal-code-search-cacert
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"carto.run/v1alpha1","kind":"Workload","metadata":{"annotations":{},"labels":{"app.kubernetes.io/part-of":"postal-code-search","apps.tanzu.vmware.com/auto-configure-actuators":"true","apps.tanzu.vmware.com/has-tests":"true","apps.tanzu.vmware.com/workload-type":"server"},"name":"postal-code-search","namespace":"workloads"},"spec":{"build":{"env":[{"name":"BP_JVM_VERSION","value":"21"}]},"env":[{"name":"spring_profiles_active","value":"oauth2"}],"resources":{"limits":{"cpu":"1500m","memory":"750M"},"requests":{"cpu":"100m","memory":"500M"}},"serviceClaims":[{"name":"sso","ref":{"apiVersion":"sso.apps.tanzu.vmware.com/v1alpha1","kind":"ClientRegistration","name":"appsso-postal-codes"}},{"name":"rmq","ref":{"apiVersion":"services.apps.tanzu.vmware.com/v1alpha1","kind":"ClassClaim","name":"msgbroker-postal-codes"}},{"name":"cacert","ref":{"apiVersion":"v1","kind":"Secret","name":"appsso-postal-codes-ca-cert"}}],"source":{"git":{"ref":{"branch":"secure-resource-server"},"url":"https://github.com/vmware-tanzu/application-accelerator-samples"},"subPath":"spring-secure-resource-server/postal-code-search"}}}
+    kapp.k14s.io/change-group: servicebinding.io/ServiceBindings
+  labels:
+    app.kubernetes.io/part-of: postal-code-search
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/component: run
+    carto.run/workload-name: postal-code-search
+spec:
+  name: cacert
+  service:
+    apiVersion: v1
+    kind: Secret
+    name: appsso-postal-codes-ca-cert
+  workload:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: postal-code-search
+

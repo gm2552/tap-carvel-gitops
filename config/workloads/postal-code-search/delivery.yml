@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postal-code-search
+  annotations:
+    kapp.k14s.io/update-strategy: fallback-on-replace
+    ootb.apps.tanzu.vmware.com/servicebinding-workload: "true"
+    kapp.k14s.io/change-rule: upsert after upserting servicebinding.io/ServiceBindings
+  labels:
+    app.kubernetes.io/part-of: postal-code-search
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/component: run
+    carto.run/workload-name: postal-code-search
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: run
+      app.kubernetes.io/part-of: postal-code-search
+      apps.tanzu.vmware.com/auto-configure-actuators: "true"
+      apps.tanzu.vmware.com/has-tests: "true"
+      apps.tanzu.vmware.com/workload-type: server
+      carto.run/workload-name: postal-code-search
+      conventions.carto.run/framework: spring-boot
+      services.conventions.carto.run/postgres: workload
+      services.conventions.carto.run/rabbitmq: workload
+      tanzu.app.live.view: "true"
+      tanzu.app.live.view.application.actuator.path: actuator
+      tanzu.app.live.view.application.actuator.port: "8081"
+      tanzu.app.live.view.application.flavours: spring-boot
+      tanzu.app.live.view.application.name: postal-code-search
+  template:
+    metadata:
+      annotations:
+        apps.tanzu.vmware.com/correlationid: https://github.com/vmware-tanzu/application-accelerator-samples?sub_path=spring-secure-resource-server/postal-code-search
+        boot.spring.io/actuator: http://:8081/actuator
+        boot.spring.io/version: 3.2.4
+        conventions.carto.run/applied-conventions: |-
+          spring-boot-convention/auto-configure-actuators-check
+          spring-boot-convention/is-native-app-check
+          spring-boot-convention/is-prometheus-enabled-check
+          spring-boot-convention/spring-boot
+          spring-boot-convention/spring-boot-web
+          spring-boot-convention/spring-boot-actuator
+          spring-boot-convention/spring-boot-actuator-probes
+          spring-boot-convention/app-live-view-appflavour-check
+          spring-boot-convention/app-live-view-connector-boot
+          spring-boot-convention/app-live-view-appflavours-boot
+          spring-boot-convention/service-intent-postgres
+          spring-boot-convention/service-intent-rabbitmq
+        developer.conventions/target-containers: workload
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"carto.run/v1alpha1","kind":"Workload","metadata":{"annotations":{},"labels":{"app.kubernetes.io/part-of":"postal-code-search","apps.tanzu.vmware.com/auto-configure-actuators":"true","apps.tanzu.vmware.com/has-tests":"true","apps.tanzu.vmware.com/workload-type":"server"},"name":"postal-code-search","namespace":"workloads"},"spec":{"build":{"env":[{"name":"BP_JVM_VERSION","value":"21"}]},"env":[{"name":"spring_profiles_active","value":"oauth2"}],"resources":{"limits":{"cpu":"1500m","memory":"750M"},"requests":{"cpu":"100m","memory":"500M"}},"serviceClaims":[{"name":"sso","ref":{"apiVersion":"sso.apps.tanzu.vmware.com/v1alpha1","kind":"ClientRegistration","name":"appsso-postal-codes"}},{"name":"rmq","ref":{"apiVersion":"services.apps.tanzu.vmware.com/v1alpha1","kind":"ClassClaim","name":"msgbroker-postal-codes"}},{"name":"cacert","ref":{"apiVersion":"v1","kind":"Secret","name":"appsso-postal-codes-ca-cert"}}],"source":{"git":{"ref":{"branch":"secure-resource-server"},"url":"https://github.com/vmware-tanzu/application-accelerator-samples"},"subPath":"spring-secure-resource-server/postal-code-search"}}}
+        services.conventions.carto.run/postgres: postgresql/42.6.2
+        services.conventions.carto.run/rabbitmq: amqp-client/5.19.0
+      labels:
+        app.kubernetes.io/component: run
+        app.kubernetes.io/part-of: postal-code-search
+        apps.tanzu.vmware.com/auto-configure-actuators: "true"
+        apps.tanzu.vmware.com/has-tests: "true"
+        apps.tanzu.vmware.com/workload-type: server
+        carto.run/workload-name: postal-code-search
+        conventions.carto.run/framework: spring-boot
+        services.conventions.carto.run/postgres: workload
+        services.conventions.carto.run/rabbitmq: workload
+        tanzu.app.live.view: "true"
+        tanzu.app.live.view.application.actuator.path: actuator
+        tanzu.app.live.view.application.actuator.port: "8081"
+        tanzu.app.live.view.application.flavours: spring-boot
+        tanzu.app.live.view.application.name: postal-code-search
+    spec:
+      containers:
+      - env:
+        - name: spring_profiles_active
+          value: oauth2
+        - name: JAVA_TOOL_OPTIONS
+          value: -Dmanagement.endpoint.health.probes.add-additional-paths="true" -Dmanagement.endpoint.health.show-details="always" -Dmanagement.endpoints.web.base-path="/actuator" -Dmanagement.endpoints.web.exposure.include="*" -Dmanagement.health.probes.enabled="true" -Dmanagement.server.port="8081" -Dserver.port="8080"
+        image: reg.perfect300rock.com/tapdev/supply-chain/postal-code-search-workloads@sha256:a3ccff2fb2373e2f24f2089508d43247e452efee06c75b035a42a3bb95638371
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: 8080
+            scheme: HTTP
+        name: workload
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+            scheme: HTTP
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 750M
+          requests:
+            cpu: 100m
+            memory: 500M
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        startupProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+            scheme: HTTP
+      serviceAccountName: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postal-code-search
+  labels:
+    app.kubernetes.io/part-of: postal-code-search
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/component: run
+    carto.run/workload-name: postal-code-search
+spec:
+  selector:
+    app.kubernetes.io/component: run
+    app.kubernetes.io/part-of: postal-code-search
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: server
+    carto.run/workload-name: postal-code-search
+    conventions.carto.run/framework: spring-boot
+    services.conventions.carto.run/postgres: workload
+    services.conventions.carto.run/rabbitmq: workload
+    tanzu.app.live.view: "true"
+    tanzu.app.live.view.application.actuator.path: actuator
+    tanzu.app.live.view.application.actuator.port: "8081"
+    tanzu.app.live.view.application.flavours: spring-boot
+    tanzu.app.live.view.application.name: postal-code-search
+  ports:
+  - targetPort: 8080
+    port: 8080
+    name: http
+
