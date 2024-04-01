@@ -1,0 +1,36 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: spring-streaming-processor.workloads.tap.20240401232648.0.0
+spec:
+  refName: spring-streaming-processor.workloads.tap
+  version: 20240401232648.0.0
+  releaseNotes: |
+    Release v20240401232648.0.0 of package spring-streaming-processor.workloads.tap
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: reg.perfect300rock.com/tapdev/supply-chain/spring-streaming-processor-workloads-bundle@sha256:6ca33251c34647e26f04c6b8db6e172768eb20d8775a8a3e8712f6f26113fa7c
+      template:
+      - ytt:
+          paths:
+          - .
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+      deploy:
+      - kapp: {}
+  valuesSchema:
+    openAPIv3:
+      type: object
+      additionalProperties: false
+      properties:
+        workload_name:
+          type: string
+          default: ""
+        replicas:
+          type: integer
+          default: 1
+
