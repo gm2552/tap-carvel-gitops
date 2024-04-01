@@ -1,0 +1,70 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: csharp-weatherforecast.workloads.tap.20240401231126.0.0+build.dea2ee9
+spec:
+  refName: csharp-weatherforecast.workloads.tap
+  version: 20240401231126.0.0+build.dea2ee9
+  releaseNotes: |
+    Release v20240401231126.0.0+build.dea2ee9 of package csharp-weatherforecast.workloads.tap
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: reg.perfect300rock.com/tapdev/supply-chain/csharp-weatherforecast-workloads-bundle@sha256:37688bac37ec110b23474dd7fa9f5b3dfe03bfeaf0efeac2ddac7642af5dfb5d
+      template:
+      - ytt:
+          paths:
+          - .
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+      deploy:
+      - kapp: {}
+  valuesSchema:
+    openAPIv3:
+      type: object
+      additionalProperties: false
+      properties:
+        workload_name:
+          title: Workload name
+          type: string
+          default: ""
+        replicas:
+          title: Replicas
+          type: integer
+          default: 1
+        port:
+          title: Port
+          type: integer
+          default: 8080
+        hostname:
+          title: Hostname
+          type: string
+          default: ""
+        cluster_issuer:
+          title: Cluster Issuer
+          type: string
+          default: tap-ingress-selfsigned
+        http_route:
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            gateways:
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  protocol:
+                    type: string
+                    default: ""
+                  name:
+                    type: string
+                    default: ""
+              default:
+              - protocol: https
+                name: default-gateway
+
