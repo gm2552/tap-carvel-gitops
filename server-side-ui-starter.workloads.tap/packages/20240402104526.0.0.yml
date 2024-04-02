@@ -1,12 +1,12 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: server-side-ui-starter.workloads.tap.20240402104526.0.0+build.dea2ee9
+  name: server-side-ui-starter.workloads.tap.20240402104526.0.0
 spec:
   refName: server-side-ui-starter.workloads.tap
-  version: 20240402104526.0.0+build.dea2ee9
+  version: 20240402104526.0.0
   releaseNotes: |
-    Release v20240402104526.0.0+build.dea2ee9 of package server-side-ui-starter.workloads.tap
+    Release v20240402104526.0.0
   template:
     spec:
       fetch:

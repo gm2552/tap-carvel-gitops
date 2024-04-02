@@ -1,12 +1,12 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: csharp-weatherforecast.workloads.tap.20240401231126.0.0+build.dea2ee9
+  name: csharp-weatherforecast.workloads.tap.20240401231126.0.0
 spec:
   refName: csharp-weatherforecast.workloads.tap
-  version: 20240401231126.0.0+build.dea2ee9
+  version: 20240401231126.0.0
   releaseNotes: |
-    Release v20240401231126.0.0+build.dea2ee9 of package csharp-weatherforecast.workloads.tap
+    Release v20240401231126.0.0
   template:
     spec:
       fetch:

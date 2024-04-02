@@ -1,12 +1,12 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: customer-profile.workloads.tap.20240402104524.0.0+build.dea2ee9
+  name: customer-profile.workloads.tap.20240402104524.0.0
 spec:
   refName: customer-profile.workloads.tap
-  version: 20240402104524.0.0+build.dea2ee9
+  version: 20240402104524.0.0
   releaseNotes: |
-    Release v20240402104524.0.0+build.dea2ee9 of package customer-profile.workloads.tap
+    Release v20240402104524.0.0
   template:
     spec:
       fetch:

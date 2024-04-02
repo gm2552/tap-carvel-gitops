@@ -1,12 +1,12 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: tanzu-java-web-app.workloads.tap.20240401233917.0.0+build.dea2ee9
+  name: tanzu-java-web-app.workloads.tap.20240401233917.0.0
 spec:
   refName: tanzu-java-web-app.workloads.tap
-  version: 20240401233917.0.0+build.dea2ee9
+  version: 20240401233917.0.0
   releaseNotes: |
-    Release v20240401233917.0.0+build.dea2ee9 of package tanzu-java-web-app.workloads.tap
+    Release v20240401233917.0.0
   template:
     spec:
       fetch:

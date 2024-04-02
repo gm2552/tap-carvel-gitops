@@ -2,24 +2,23 @@
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
 metadata:
- name: angular-frontend
+ name: spring-streaming-sink
 spec:
  serviceAccountName: workload-installer
  packageRef:
-   refName: angular-frontend.workloads.tap # name of the Package
+   refName: spring-streaming-sink.workloads.tap # name of the Package
    versionSelection:
      constraints: '>=0.0.0'
  values:
  - secretRef:
-     name: angular-frontend-package-values # Secret created in previous step
+     name: spring-streaming-sink-package-values # Secret created in previous step
 ---
 apiVersion: v1
 kind: Secret
 metadata:
- name: angular-frontend-package-values
+ name: spring-streaming-sink-package-values
 stringData:
  values.yaml: |
    ---
    replicas: 1
-   hostname: ""
-   workload_name: angular-frontend
+   workload_name: spring-streaming-sink

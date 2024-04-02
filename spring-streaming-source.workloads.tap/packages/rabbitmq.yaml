@@ -1,0 +1,8 @@
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: stream-sample-message-broker
+spec:
+  classRef:
+    name: rabbitmq-unmanaged
+
