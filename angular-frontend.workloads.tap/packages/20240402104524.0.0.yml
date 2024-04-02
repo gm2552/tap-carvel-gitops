@@ -1,12 +1,12 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: angular-frontend.workloads.tap.20240402104524.0.0+build.dea2ee9
+  name: angular-frontend.workloads.tap.20240402104524.0.0
 spec:
   refName: angular-frontend.workloads.tap
-  version: 20240402104524.0.0+build.dea2ee9
+  version: 20240402104524.0.0
   releaseNotes: |
-    Release v20240402104524.0.0+build.dea2ee9 of package angular-frontend.workloads.tap
+    Release v20240402104524.0.0
   template:
     spec:
       fetch:
